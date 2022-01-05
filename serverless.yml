@@ -1,0 +1,56 @@
+service: nifty-royale-core-server
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: "*"
+
+functions:
+  app:
+    handler: src.handler
+    environment:
+      NODE_ENV: production
+    events:
+      - http: ANY /
+        cors:
+          enabled: true
+          origin: "*"
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - Authorization
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+          methods: "HEAD,OPTIONS,GET,POST,PUT,PATCH,DELETE"
+          allowCredentials: false
+      - http: "ANY {proxy+}"
+        cors:
+          enabled: true
+          origin: "*"
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - Authorization
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+          methods: "HEAD,OPTIONS,GET,POST,PUT,PATCH,DELETE"
+          allowCredentials: false
+
+package:
+  exclude:
+    - config/development.json
+    - .babelrc
+    - .gitignore
+    - README.md
+    - local.js
+
+plugins:
+  - serverless-offline

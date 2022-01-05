@@ -1,0 +1,5 @@
+{
+	"environment": "DEVELOPMENT",
+	"api_server": "http://localhost:8000",
+	"auth_server": "http://localhost:8001"
+}
