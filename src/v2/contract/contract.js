@@ -10,24 +10,15 @@ const { GenerateRecordHistory } = require("../../utils");
  */
 const Network = Object.freeze({
   MAINNET: "MAINNET",
-  KOVAN: "KOVAN",
   RINKEBY: "RINKEBY",
-  MATIC: "MATIC",
-  MUMBAI: "MUMBAI",
   _: {
     code: {
       MAINNET: 0,
-      KOVAN: 1,
-      RINKEBY: 2,
-      MATIC: 3,
-      MUMBAI: 4,
+      RINKEBY: 1,
     },
     network: {
       0: "MAINNET",
-      1: "KOVAN",
-      2: "RINKEBY",
-      3: "MATIC",
-      4: "MUMBAI",
+      1: "RINKEBY",
     },
   },
 });
@@ -39,10 +30,6 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  abi: {
-    type: Object,
-    required: true,
-  },
   name: {
     type: String,
     required: true,
@@ -50,6 +37,14 @@ const schema = new Schema({
   network: {
     type: Number,
     required: true,
+  },
+  queueId: {
+    type: Number,
+    required: false,
+  },
+  polygonContractAddress: {
+    type: String,
+    required: false,
   },
   creator: {
     type: String,
@@ -61,10 +56,6 @@ const schema = new Schema({
   },
   description: {
     type: String,
-    required: false,
-  },
-  queueId: {
-    type: Number,
     required: false,
   },
   defaultMetadata: {
@@ -97,21 +88,17 @@ const schema = new Schema({
     type: String,
     required: false,
   },
-  dropStatus: {
+  isDropEnded: {
     type: Boolean,
     default: false,
     required: false,
   },
-  battleStatus: {
+  isBattleEnded: {
     type: Boolean,
     default: false,
     required: false,
   },
   dropDate: {
-    type: Date,
-    required: false,
-  },
-  battleDate: {
     type: Date,
     required: false,
   },
@@ -143,7 +130,7 @@ schema.methods.export = function () {
 
   delete data.__v;
   data.network = this.networkParse();
-  if (new Date(data.battleDate).getTime() > Date.now()) delete data.address;
+  if (new Date(data.dropDate).getTime() > Date.now()) delete data.address;
   data.id = data._id;
   delete data._id;
 
@@ -159,6 +146,9 @@ schema.methods.update = function (obj, res) {
   return new Promise(async (resolve, reject) => {
     if (obj.creator) this.creator = obj.creator;
     if (obj.artist) this.artist = obj.artist;
+    if (obj.queueId) this.queueId = obj.queueId;
+    if (obj.polygonContractAddress)
+      this.polygonContractAddress = obj.polygonContractAddress;
     if (obj.defaultMetadata) this.defaultMetadata = obj.defaultMetadata;
     if (obj.prizeMetadata) this.prizeMetadata = obj.prizeMetadata;
     if (obj.defaultNFTUri) this.defaultNFTUri = obj.defaultNFTUri;
@@ -166,10 +156,9 @@ schema.methods.update = function (obj, res) {
     if (obj.isDefaultNFTImage) this.isDefaultNFTImage = obj.isDefaultNFTImage;
     if (obj.isPrizeNFTImage) this.isPrizeNFTImage = obj.isPrizeNFTImage;
     if (obj.type) this.type = obj.type;
-    if (obj.dropStatus) this.dropStatus = obj.dropStatus;
-    if (obj.battleStatus) this.battleStatus = obj.battleStatus;
+    if (obj.isDropEnded) this.isDropEnded = obj.isDropEnded;
+    if (obj.isBattleEnded) this.isBattleEnded = obj.isBattleEnded;
     if (obj.dropDate) this.dropDate = obj.dropDate;
-    if (obj.battleDate) this.battleDate = obj.battleDate;
     if (res)
       this.record_history = GenerateRecordHistory(this.record_history, res);
     try {
@@ -190,13 +179,12 @@ schema.methods.update = function (obj, res) {
  */
 schema.statics.create = function (obj, res) {
   return new Promise(async (resolve, reject) => {
-    if (obj.address && obj.name && obj.abi && obj.network) {
+    if (obj.address && obj.name && obj.network) {
       try {
         const contract = new this();
 
         contract.address = obj.address;
         contract.name = obj.name;
-        contract.abi = obj.abi;
         contract.network = Network._.code[obj.network.toUpperCase()];
         const update = await contract.update(obj, res);
 
@@ -205,9 +193,7 @@ schema.statics.create = function (obj, res) {
         return reject(e);
       }
     } else {
-      const e = new Error(
-        "address, name, abi & network are required paramters"
-      );
+      const e = new Error("address, name & network are required parameters");
 
       e.status = 406;
       reject(e);
@@ -221,20 +207,20 @@ schema.statics.create = function (obj, res) {
  */
 schema.statics.query = function (query = {}) {
   return new Promise(async (resolve, reject) => {
-    let { offset, limit, all, search, network, show_all, battleDate } = query;
+    let { offset, limit, all, search, network, show_all, dropDate } = query;
     ["search", "offset", "limit", "all", "show_all"].forEach(
       (q) => delete query[q]
     );
 
-    if (!show_all && !all && !battleDate) {
+    if (!show_all && !all && !dropDate) {
       query = Object.assign(query, {
-        battleDate: {
+        dropDate: {
           $lte: new Date(),
         },
       });
     }
 
-    if (battleDate) query = Object.assign(query, { battleDate });
+    if (dropDate) query = Object.assign(query, { dropDate });
     if (network)
       query = Object.assign(query, {
         network: Network._.code[network.toUpperCase()],
@@ -270,7 +256,7 @@ schema.statics.query = function (query = {}) {
           {
             skip: offset,
             limit,
-            sort: { battleDate: -1 },
+            sort: { dropDate: -1 },
           }
         );
 
@@ -286,7 +272,7 @@ schema.statics.query = function (query = {}) {
           },
         });
       }
-      const results = await this.find(query, {}, { sort: { battleDate: -1 } });
+      const results = await this.find(query, {}, { sort: { dropDate: -1 } });
 
       return resolve({ results });
     } catch (e) {
