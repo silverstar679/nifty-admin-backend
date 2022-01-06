@@ -1,7 +1,7 @@
 {
   "name": "admin-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NiftyRoyale/admin-backend.git"
@@ -19,7 +19,7 @@
     "dev:sls": "sls offline",
     "build": "babel src -d dist",
     "test": "NODE_ENV=test mocha --compilers js:babel-register --timeout 10000",
-    "deploy": "npm run build && serverless deploy --aws-profile nifty-royale-agent"
+    "deploy": "npm run build && serverless deploy --aws-profile kvnqng"
   },
   "dependencies": {
     "aws-serverless-express": "^3.4.0",
@@ -27,6 +27,8 @@
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.2",
+    "http": "^0.0.1-security",
+    "http-errors": "^1.8.1",
     "mongoose": "^6.1.5",
     "morgan": "^1.10.0",
     "serverless-http": "^2.7.0"

@@ -35,7 +35,7 @@ const schema = new Schema({
     required: true,
   },
   network: {
-    type: Number,
+    type: String,
     required: true,
   },
   queueId: {
@@ -70,16 +70,7 @@ const schema = new Schema({
     type: String,
     required: false,
   },
-  prizeNFTUri: {
-    type: String,
-    required: false,
-  },
   isDefaultNFTImage: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
-  isPrizeNFTImage: {
     type: Boolean,
     default: false,
     required: false,
@@ -102,13 +93,13 @@ const schema = new Schema({
     type: Date,
     required: false,
   },
+  extra: {
+    type: Object,
+    required: false,
+  },
   record_history: {
     created_at: Date,
-    created_by: String,
-    created_by_type: String,
     updated_at: Date,
-    updated_by: String,
-    updated_by_type: String,
   },
 });
 
@@ -129,7 +120,7 @@ schema.methods.export = function () {
   const data = Object.assign({}, this.toJSON());
 
   delete data.__v;
-  data.network = this.networkParse();
+  // data.network = this.networkParse();
   if (new Date(data.dropDate).getTime() > Date.now()) delete data.address;
   data.id = data._id;
   delete data._id;
@@ -146,21 +137,22 @@ schema.methods.update = function (obj, res) {
   return new Promise(async (resolve, reject) => {
     if (obj.creator) this.creator = obj.creator;
     if (obj.artist) this.artist = obj.artist;
+    if (obj.description) this.description = obj.description;
     if (obj.queueId) this.queueId = obj.queueId;
     if (obj.polygonContractAddress)
       this.polygonContractAddress = obj.polygonContractAddress;
     if (obj.defaultMetadata) this.defaultMetadata = obj.defaultMetadata;
     if (obj.prizeMetadata) this.prizeMetadata = obj.prizeMetadata;
     if (obj.defaultNFTUri) this.defaultNFTUri = obj.defaultNFTUri;
-    if (obj.prizeNFTUri) this.prizeNFTUri = obj.prizeNFTUri;
     if (obj.isDefaultNFTImage) this.isDefaultNFTImage = obj.isDefaultNFTImage;
-    if (obj.isPrizeNFTImage) this.isPrizeNFTImage = obj.isPrizeNFTImage;
     if (obj.type) this.type = obj.type;
     if (obj.isDropEnded) this.isDropEnded = obj.isDropEnded;
     if (obj.isBattleEnded) this.isBattleEnded = obj.isBattleEnded;
     if (obj.dropDate) this.dropDate = obj.dropDate;
+    if (obj.extra) this.extra = obj.extra;
     if (res)
       this.record_history = GenerateRecordHistory(this.record_history, res);
+
     try {
       await this.save();
 
@@ -185,7 +177,8 @@ schema.statics.create = function (obj, res) {
 
         contract.address = obj.address;
         contract.name = obj.name;
-        contract.network = Network._.code[obj.network.toUpperCase()];
+        contract.network = obj.network;
+        // contract.network = Network._.code[obj.network.toUpperCase()];
         const update = await contract.update(obj, res);
 
         return resolve(update);
@@ -223,9 +216,10 @@ schema.statics.query = function (query = {}) {
     if (dropDate) query = Object.assign(query, { dropDate });
     if (network)
       query = Object.assign(query, {
-        network: Network._.code[network.toUpperCase()],
+        // network: Network._.code[network.toUpperCase()],
+        network: network,
       });
-    else query = Object.assign(query, { network: 0 });
+    else query = Object.assign(query, { network: "mainnet" });
 
     if (search) {
       const regex = { $regex: search, $options: "i" };
@@ -233,12 +227,7 @@ schema.statics.query = function (query = {}) {
       query = Object.assign(query, {
         $and: [
           {
-            $or: [
-              { address: regex },
-              { name: regex },
-              { abi: regex },
-              { creator: regex },
-            ],
+            $or: [{ address: regex }, { name: regex }, { creator: regex }],
           },
         ],
       });

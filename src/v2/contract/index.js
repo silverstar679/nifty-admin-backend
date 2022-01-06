@@ -68,18 +68,18 @@ router.get("/:id", async (req, res) => {
   return ResponseConstructor(res, req, 200, undefined, contract.export());
 });
 
-/**
- * Validation
- * @type {[type]}
- */
-router.use((req, res, next) => {
-  return authorize(req, (e, pass) => {
-    if (e || !pass) {
-      return errorResponse(res, e, req);
-    }
-    return next();
-  });
-});
+// /**
+//  * Validation
+//  * @type {[type]}
+//  */
+// router.use((req, res, next) => {
+//   return authorize(req, (e, pass) => {
+//     if (e || !pass) {
+//       return errorResponse(res, e, req);
+//     }
+//     return next();
+//   });
+// });
 
 /**
  * Create

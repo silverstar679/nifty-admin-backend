@@ -8,7 +8,7 @@ const config = require("config");
 const path = require("path");
 const cors = require("cors");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-const { errorResponse, ErrorTemplate } = require("./utils");
+const { ErrorTemplate } = require("./utils");
 const { wrongEndpoint } = ErrorTemplate;
 const { DATABASE_URL } = process.env;
 
@@ -19,10 +19,6 @@ mongoose
   })
   .then(() => console.log("connection successful"))
   .catch((err) => console.error(err));
-
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useFindAndModify", false);
-mongoose.set("useCreateIndex", true);
 
 mongoose.connection.on(
   "error",
@@ -60,7 +56,6 @@ server
    * Routing
    */
   .use("/v2", require("./v2"))
-  .get("*", (req, res, next) => wrongEndpoint(req, res))
-  .use((err, req, res, next) => errorResponse(res, err, req));
+  .get("*", (req, res, next) => wrongEndpoint(req, res));
 
 module.exports = server;
