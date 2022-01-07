@@ -9,7 +9,7 @@ module.exports = function (app) {
   // get and post request for /drops endpoints
   app
     .route("/drops")
-    .get(dropController.listAllDrops)
+    .get(dropController.listDrops)
     .post(dropController.createNewDrop);
 
   // put and delete request for /drops endpoints

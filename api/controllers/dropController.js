@@ -3,9 +3,10 @@ const Drop = require("../models/dropModel");
 
 // DEFINE CONTROLLER FUNCTIONS
 
-// listAllDrops function - To list all drops
-exports.listAllDrops = (req, res) => {
-  Drop.find({}, (err, drop) => {
+// listDrops function - To list drops
+exports.listDrops = (req, res) => {
+  const network = req.query.network;
+  Drop.find({ network: network }, (err, drop) => {
     if (err) {
       res.status(500).send(err);
     }
