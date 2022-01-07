@@ -86,4 +86,4 @@ const DropSchema = new Schema({
 });
 
 // create and export model
-module.exports = mongoose.model("dropModel", DropSchema);
+module.exports = mongoose.model("drop", DropSchema);
