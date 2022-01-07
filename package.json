@@ -14,8 +14,8 @@
   "homepage": "https://github.com/NiftyRoyale/admin-backend#readme",
   "description": "",
   "scripts": {
-    "start": "NODE_ENV=production node dist/serverless.js",
-    "dev:local": "NODE_ENV=development nodemon local.js --exec babel-node",
+    "start": "NODE_ENV=production node dist/server.js",
+    "dev:local": "NODE_ENV=development nodemon dev.js --exec babel-node",
     "dev:sls": "sls offline",
     "build": "babel src -d dist",
     "test": "NODE_ENV=test mocha --compilers js:babel-register --timeout 10000",

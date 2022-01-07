@@ -46,11 +46,10 @@ functions:
 
 package:
   exclude:
-    - config/development.json
     - .babelrc
     - .gitignore
     - README.md
-    - local.js
+    - dev.js
 
 plugins:
   - serverless-offline
