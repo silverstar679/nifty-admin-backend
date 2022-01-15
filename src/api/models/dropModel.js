@@ -21,7 +21,7 @@ const DropSchema = new Schema({
     required: true,
   },
   queueId: {
-    type: Number,
+    type: String,
     required: false,
   },
   polygonContractAddress: {
