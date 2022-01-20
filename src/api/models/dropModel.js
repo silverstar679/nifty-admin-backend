@@ -75,7 +75,15 @@ const DropSchema = new Schema({
     type: Date,
     required: false,
   },
-  extra: {
+  battleDate: {
+    type: Date,
+    required: false,
+  },
+  threshold: {
+    type: String,
+    required: false,
+  },
+  previewMedia: {
     type: Object,
     required: false,
   },
