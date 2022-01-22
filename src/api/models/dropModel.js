@@ -71,6 +71,11 @@ const DropSchema = new Schema({
     default: false,
     required: false,
   },
+  isFutureDrop: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
   dropDate: {
     type: Date,
     required: false,
