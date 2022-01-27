@@ -41,8 +41,8 @@ exports.updateDrop = (req, res) => {
 };
 
 // deleteDrop function - To delete drop by id
-exports.deleteDrop = async (req, res) => {
-  await Drop.deleteOne({ _id: req.params.id }, (err) => {
+exports.deleteDrop = (req, res) => {
+  Drop.deleteOne({ _id: req.params.id }, (err) => {
     if (err) {
       return res.status(404).send(err);
     }

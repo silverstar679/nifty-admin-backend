@@ -10,15 +10,15 @@ const Schema = mongoose.Schema;
 const DropSchema = new Schema({
   address: {
     type: String,
-    required: true,
+    required: false,
   },
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   network: {
     type: String,
-    required: true,
+    required: false,
   },
   queueId: {
     type: String,
