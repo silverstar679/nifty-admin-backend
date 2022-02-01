@@ -40,6 +40,10 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
+  prizeDescription: {
+    type: String,
+    required: false,
+  },
   defaultMetadata: {
     type: String,
     required: false,
