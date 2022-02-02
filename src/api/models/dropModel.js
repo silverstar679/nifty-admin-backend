@@ -44,6 +44,10 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
+  battleMessage: {
+    type: String,
+    required: false,
+  },
   defaultMetadata: {
     type: String,
     required: false,
