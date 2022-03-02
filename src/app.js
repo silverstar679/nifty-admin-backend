@@ -32,7 +32,7 @@ app
   .use(bodyParser.json()); // support json encoded bodies
 
 // Import API route
-const routes = require("./api/routes/dropRoutes"); //importing route
+const routes = require("./api/routes"); //importing route
 routes(app);
 
 module.exports = app;
