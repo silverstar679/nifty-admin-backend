@@ -3,7 +3,7 @@
 // create App function
 module.exports = function (app) {
   const dropController = require("../controllers/dropController");
-  const whitelistController = require("../controllers/whitelistController");
+  const collectionController = require("../controllers/collectionController");
 
   // dropController Routes
 
@@ -19,17 +19,17 @@ module.exports = function (app) {
     .put(dropController.updateDrop)
     .delete(dropController.deleteDrop);
 
-  // whitelistController Routes
+  // collectionController Routes
 
-  // get and post request for /whitelists endpoints
+  // get and post request for /collections endpoints
   app
-    .route("/whitelists")
-    .get(whitelistController.listWhitelists)
-    .post(whitelistController.createNewWhitelist);
+    .route("/collections")
+    .get(collectionController.listWhitelists)
+    .post(collectionController.createNewWhitelist);
 
-  // put and delete request for /whitelists endpoints
+  // put and delete request for /collections endpoints
   app
-    .route("/whitelist/:id")
-    .put(whitelistController.updateWhitelist)
-    .delete(whitelistController.deleteWhitelist);
+    .route("/collection/:id")
+    .put(collectionController.updateWhitelist)
+    .delete(collectionController.deleteWhitelist);
 };

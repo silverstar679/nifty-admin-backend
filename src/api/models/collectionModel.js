@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema Instance and add schema propertise
-const WhitelistSchema = new Schema({
+const CollectionSchema = new Schema({
   name: {
     type: String,
     required: false,
@@ -24,6 +24,11 @@ const WhitelistSchema = new Schema({
     type: String,
     required: false,
   },
+  isLive: {
+    type: Boolean,
+    default: false,
+    required: false,
+  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -31,4 +36,4 @@ const WhitelistSchema = new Schema({
 });
 
 // create and export model
-module.exports = mongoose.model("whitelist", WhitelistSchema);
+module.exports = mongoose.model("collection", CollectionSchema);
