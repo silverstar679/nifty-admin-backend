@@ -4,6 +4,7 @@
 module.exports = function (app) {
   const dropController = require("../controllers/dropController");
   const collectionController = require("../controllers/collectionController");
+  const collectionBattleController = require("../controllers/collectionBattleController");
 
   // dropController Routes
 
@@ -32,4 +33,28 @@ module.exports = function (app) {
     .route("/collection/:id")
     .put(collectionController.updateWhitelist)
     .delete(collectionController.deleteWhitelist);
+
+  // collectionBattleController Routes
+
+  // get and post request for /collectionBattles endpoints
+  app
+    .route("/collectionBattles")
+    .get(collectionBattleController.listCollectionBattles)
+    .post(collectionBattleController.createNewCollectionBattle);
+
+  // put and delete request for /collectionBattles endpoints
+  app
+    .route("/collectionBattle:id")
+    .put(collectionBattleController.updateCollectionBattle)
+    .delete(collectionBattleController.deleteCollectionBattle);
+
+  // add or remove token ids for collectionBattle
+  app
+    .route("/collectionBattleTokenIdsAdd:id")
+    .patch(collectionBattleController.addCollectionBattleTokenIds);
+
+  // add or remove token ids for collectionBattle
+  app
+    .route("/collectionBattleTokenIdsRemove:id")
+    .patch(collectionBattleController.removeCollectionBattleTokenIds);
 };
