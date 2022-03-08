@@ -33,15 +33,15 @@ const CollectionBattleSchema = new Schema({
     required: false,
   },
   prizeTokenId: {
-    type: Number,
+    type: String,
     required: false,
   },
   tokenIds: {
-    type: [Number],
+    type: String,
     required: false,
   },
   battleStatus: {
-    type: Number,
+    type: String,
     default: false,
     required: false,
   },
