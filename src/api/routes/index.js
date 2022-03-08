@@ -44,17 +44,7 @@ module.exports = function (app) {
 
   // put and delete request for /collectionBattles endpoints
   app
-    .route("/collectionBattle:id")
+    .route("/collectionBattle/:id")
     .put(collectionBattleController.updateCollectionBattle)
     .delete(collectionBattleController.deleteCollectionBattle);
-
-  // // add or remove token ids for collectionBattle
-  // app
-  //   .route("/collectionBattleTokenIdsAdd:id")
-  //   .patch(collectionBattleController.addCollectionBattleTokenIds);
-
-  // // add or remove token ids for collectionBattle
-  // app
-  //   .route("/collectionBattleTokenIdsRemove:id")
-  //   .patch(collectionBattleController.removeCollectionBattleTokenIds);
 };
