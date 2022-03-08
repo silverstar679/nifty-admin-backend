@@ -28,6 +28,14 @@ const CollectionBattleSchema = new Schema({
     type: String,
     required: false,
   },
+  prizeContractAddress: {
+    type: String,
+    required: false,
+  },
+  prizeTokenId: {
+    type: Number,
+    required: false,
+  },
   tokenIds: {
     type: [Number],
     required: false,

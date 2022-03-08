@@ -48,13 +48,13 @@ module.exports = function (app) {
     .put(collectionBattleController.updateCollectionBattle)
     .delete(collectionBattleController.deleteCollectionBattle);
 
-  // add or remove token ids for collectionBattle
-  app
-    .route("/collectionBattleTokenIdsAdd:id")
-    .patch(collectionBattleController.addCollectionBattleTokenIds);
+  // // add or remove token ids for collectionBattle
+  // app
+  //   .route("/collectionBattleTokenIdsAdd:id")
+  //   .patch(collectionBattleController.addCollectionBattleTokenIds);
 
-  // add or remove token ids for collectionBattle
-  app
-    .route("/collectionBattleTokenIdsRemove:id")
-    .patch(collectionBattleController.removeCollectionBattleTokenIds);
+  // // add or remove token ids for collectionBattle
+  // app
+  //   .route("/collectionBattleTokenIdsRemove:id")
+  //   .patch(collectionBattleController.removeCollectionBattleTokenIds);
 };
