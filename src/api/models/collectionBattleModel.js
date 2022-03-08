@@ -56,4 +56,4 @@ const CollectionBattleSchema = new Schema({
 });
 
 // create and export model
-module.exports = mongoose.model("collectionBattle", CollectionBattleSchema);
+module.exports = mongoose.model("collectionbattle", CollectionBattleSchema);

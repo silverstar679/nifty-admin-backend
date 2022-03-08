@@ -25,14 +25,14 @@ module.exports = function (app) {
   // get and post request for /collections endpoints
   app
     .route("/collections")
-    .get(collectionController.listWhitelists)
-    .post(collectionController.createNewWhitelist);
+    .get(collectionController.listCollections)
+    .post(collectionController.createNewCollection);
 
   // put and delete request for /collections endpoints
   app
     .route("/collection/:id")
-    .put(collectionController.updateWhitelist)
-    .delete(collectionController.deleteWhitelist);
+    .put(collectionController.updateCollection)
+    .delete(collectionController.deleteCollection);
 
   // collectionBattleController Routes
 
