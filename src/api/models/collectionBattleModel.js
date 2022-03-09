@@ -37,7 +37,7 @@ const CollectionBattleSchema = new Schema({
     required: false,
   },
   tokenIds: {
-    type: String,
+    type: [Number],
     required: false,
   },
   battleStatus: {

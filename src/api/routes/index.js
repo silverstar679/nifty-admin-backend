@@ -47,4 +47,7 @@ module.exports = function (app) {
     .route("/collectionBattle/:id")
     .put(collectionBattleController.updateCollectionBattle)
     .delete(collectionBattleController.deleteCollectionBattle);
+
+  // add token ids for /addTokenIds endpoints
+  app.route("/addTokenIds/:id").patch(collectionBattleController.addTokenIds);
 };

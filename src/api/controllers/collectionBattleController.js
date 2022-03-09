@@ -3,44 +3,62 @@ const CollectionBattle = require("../models/collectionBattleModel");
 
 // DEFINE CONTROLLER FUNCTIONS
 
-// listCollectionBattles function - To list drops
+// listCollectionBattles function - To list battles
 exports.listCollectionBattles = (req, res) => {
   const network = req.query.network;
-  CollectionBattle.find({ network: network }, (err, drop) => {
+  CollectionBattle.find({ network: network }, (err, battle) => {
     if (err) {
       res.status(500).send(err);
     }
-    res.status(200).json(drop);
+    res.status(200).json(battle);
   });
 };
 
-// createNewCollectionBattle function - To create new drop
+// createNewCollectionBattle function - To create new battle
 exports.createNewCollectionBattle = (req, res) => {
   let newCollectionBattle = new CollectionBattle(req.body);
-  newCollectionBattle.save((err, drop) => {
+  newCollectionBattle.save((err, battle) => {
     if (err) {
       res.status(500).send(err);
     }
-    res.status(201).json(drop);
+    res.status(201).json(battle);
   });
 };
 
-// updateCollectionBattle function - To update drop status by id
+// updateCollectionBattle function - To update battle status by id
 exports.updateCollectionBattle = (req, res) => {
   CollectionBattle.findOneAndUpdate(
     { _id: req.params.id },
     req.body,
     { new: true },
-    (err, drop) => {
+    (err, battle) => {
       if (err) {
         res.status(500).send(err);
       }
-      res.status(200).json(drop);
+      res.status(200).json(battle);
     }
   );
 };
 
-// deleteCollectionBattle function - To delete drop by id
+// updateCollectionBattle function - To update battle status by id
+exports.addTokenIds = async (req, res) => {
+  const battle = await CollectionBattle.findOne({ _id: req.params.id });
+  const update = battle.tokenIds.concat(req.body.tokenIds);
+
+  CollectionBattle.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: update },
+    { new: true },
+    (err, battle) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(battle);
+    }
+  );
+};
+
+// deleteCollectionBattle function - To delete battle by id
 exports.deleteCollectionBattle = (req, res) => {
   CollectionBattle.deleteOne({ _id: req.params.id }, (err) => {
     if (err) {
