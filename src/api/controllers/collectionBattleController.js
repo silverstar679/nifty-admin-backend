@@ -43,7 +43,7 @@ exports.updateCollectionBattle = (req, res) => {
 // updateCollectionBattle function - To update battle status by id
 exports.addTokenIds = async (req, res) => {
   const battle = await CollectionBattle.findOne({ _id: req.params.id });
-  const update = battle.tokenIds.concat(req.body.tokenIds);
+  const update = { tokenIds: battle.tokenIds.concat(req.body.tokenIds) };
 
   CollectionBattle.findOneAndUpdate(
     { _id: req.params.id },
