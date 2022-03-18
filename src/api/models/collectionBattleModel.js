@@ -45,8 +45,20 @@ const CollectionBattleSchema = new Schema({
     default: false,
     required: false,
   },
+  dropDate: {
+    type: Date,
+    required: false,
+  },
   battleDate: {
     type: Date,
+    required: false,
+  },
+  defaultMetadata: {
+    type: String,
+    required: false,
+  },
+  prizeMetadata: {
+    type: String,
     required: false,
   },
   created_at: {
