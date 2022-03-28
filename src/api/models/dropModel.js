@@ -28,6 +28,18 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
+  prizeContractAddress: {
+    type: String,
+    required: false,
+  },
+  prizeTokenId: {
+    type: String,
+    required: false,
+  },
+  tokenIds: {
+    type: [Number],
+    required: false,
+  },
   creator: {
     type: String,
     required: false,
@@ -90,6 +102,10 @@ const DropSchema = new Schema({
   },
   battleDate: {
     type: Date,
+    required: false,
+  },
+  battleStatus: {
+    type: String,
     required: false,
   },
   threshold: {
