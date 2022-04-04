@@ -20,6 +20,10 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
+  polygonNetwork: {
+    type: String,
+    required: false,
+  },
   queueId: {
     type: String,
     required: false,

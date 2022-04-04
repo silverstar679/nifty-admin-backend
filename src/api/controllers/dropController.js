@@ -6,12 +6,16 @@ const Drop = require("../models/dropModel");
 // listDrops function - To list drops
 exports.listDrops = (req, res) => {
   const network = req.query.network;
-  Drop.find({ network: network }, (err, drop) => {
-    if (err) {
-      res.status(500).send(err);
+  const polygonNetwork = req.query.polygonNetwork;
+  Drop.find(
+    { network: network, polygonNetwork: polygonNetwork },
+    (err, drop) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(drop);
     }
-    res.status(200).json(drop);
-  });
+  );
 };
 
 // createNewDrop function - To create new drop
