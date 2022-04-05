@@ -85,19 +85,13 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
-  isDropEnded: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
-  isBattleEnded: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
   isFutureDrop: {
     type: Boolean,
     default: false,
+    required: false,
+  },
+  presaleDate: {
+    type: Date,
     required: false,
   },
   dropDate: {
@@ -123,6 +117,10 @@ const DropSchema = new Schema({
   created_at: {
     type: Date,
     default: Date.now,
+  },
+  whitelist: {
+    type: String,
+    required: false,
   },
 });
 
