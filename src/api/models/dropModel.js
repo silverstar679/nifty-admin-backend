@@ -122,7 +122,11 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
-  abi: {
+  ethereumAbi: {
+    type: String,
+    required: false,
+  },
+  polygonAbi: {
     type: String,
     required: false,
   },
