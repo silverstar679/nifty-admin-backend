@@ -122,6 +122,10 @@ const DropSchema = new Schema({
     type: String,
     required: false,
   },
+  abi: {
+    type: String,
+    required: false,
+  },
 });
 
 // create and export model
