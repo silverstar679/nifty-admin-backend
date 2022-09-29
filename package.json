@@ -1,7 +1,7 @@
 {
-  "name": "admin-backend",
+  "name": "niftyroyale-api",
   "version": "2.0.0",
-  "main": "index.js",
+  "main": "functions/api.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NiftyRoyale/admin-backend.git"
@@ -14,7 +14,7 @@
   "homepage": "https://github.com/NiftyRoyale/admin-backend#readme",
   "description": "",
   "scripts": {
-    "build": "netlify-lambda build express",
+    "build": "netlify-lambda build src",
     "start": "nodemon server-local.js"
   },
   "dependencies": {
