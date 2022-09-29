@@ -15,7 +15,7 @@
   "description": "",
   "scripts": {
     "build": "netlify-lambda build src",
-    "start": "nodemon server-local.js"
+    "start": "nodemon dev.js"
   },
   "dependencies": {
     "body-parser": "^1.19.1",

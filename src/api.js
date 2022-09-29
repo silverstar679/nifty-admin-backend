@@ -3,14 +3,153 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const serverless = require('serverless-http');
+const serverless = require("serverless-http");
 
 // Import DB Connection
 require("./config/db");
 
+// Import DB Model
+const Drop = require("./models/dropModel");
+const Collection = require("./models/collectionModel");
+const CollectionBattle = require("./models/collectionBattleModel");
+
 // create express app
 const app = express();
 const router = express.Router();
+
+router.get("/drops/", function (req, res) {
+  const network = req.query.network;
+  const polygonNetwork = req.query.polygonNetwork;
+  Drop.find(
+    { network: network, polygonNetwork: polygonNetwork },
+    (err, drop) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(drop);
+    }
+  );
+});
+
+router.post("/drops/", function (req, res) {
+  let newDrop = new Drop(req.body);
+  newDrop.save((err, drop) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(201).json(drop);
+  });
+});
+
+router.put("/drop/:id/", function (req, res) {
+  Drop.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true },
+    (err, drop) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(drop);
+    }
+  );
+});
+
+router.delete("/drop/:id/", function (req, res) {
+  Drop.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      return res.status(404).send(err);
+    }
+    res.status(200).json({ message: "Drop successfully deleted" });
+  });
+});
+
+router.get("/collections/", function (req, res) {
+  const network = req.query.network;
+  Collection.find({ network: network }, (err, drop) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(200).json(drop);
+  });
+});
+
+router.post("/collections/", function (req, res) {
+  let newCollection = new Collection(req.body);
+  newCollection.save((err, drop) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(201).json(drop);
+  });
+});
+
+router.put("/collection/:id/", function (req, res) {
+  Collection.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true },
+    (err, drop) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(drop);
+    }
+  );
+});
+
+router.delete("/collection/:id/", function (req, res) {
+  Collection.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      return res.status(404).send(err);
+    }
+    res.status(200).json({ message: "Collection successfully deleted" });
+  });
+});
+
+
+router.get("/collectionBattles/", function (req, res) {
+  const network = req.query.network;
+  CollectionBattle.find({ network: network }, (err, battle) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(200).json(battle);
+  });
+});
+
+router.post("/collectionBattles/", function (req, res) {
+  let newCollectionBattle = new CollectionBattle(req.body);
+  newCollectionBattle.save((err, battle) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(201).json(battle);
+  });
+});
+
+router.put("/collectionBattle/:id/", function (req, res) {
+  CollectionBattle.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true },
+    (err, battle) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).json(battle);
+    }
+  );
+});
+
+router.delete("/collectionBattle/:id/", function (req, res) {
+  CollectionBattle.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      return res.status(404).send(err);
+    }
+    res.status(200).json({ message: "CollectionBattle successfully deleted" });
+  });
+});
 
 app
   .use(cors())
@@ -30,11 +169,7 @@ app
   })
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json()) // support json encoded bodies
-  .use('/.netlify/functions/api', router);  // path must route to lambda
-
-// Import API route
-const routes = require("./api/routes"); //importing route
-routes(app);
+  .use("/.netlify/functions/api", router); // path must route to lambda
 
 module.exports = app;
 module.exports.handler = serverless(app);
