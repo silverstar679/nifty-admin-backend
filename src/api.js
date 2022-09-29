@@ -3,13 +3,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
+const serverless = require('serverless-http');
 
 // Import DB Connection
 require("./config/db");
 
 // create express app
 const app = express();
+const router = express.Router();
 
 app
   .use(cors())
@@ -27,12 +28,13 @@ app
       .header("Access-Control-Allow-Credentials", true);
     next();
   })
-  .use(awsServerlessExpressMiddleware.eventContext())
   .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json()); // support json encoded bodies
+  .use(bodyParser.json()) // support json encoded bodies
+  .use('/.netlify/functions/api', router);  // path must route to lambda
 
 // Import API route
 const routes = require("./api/routes"); //importing route
 routes(app);
 
 module.exports = app;
+module.exports.handler = serverless(app);

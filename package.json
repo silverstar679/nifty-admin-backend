@@ -1,6 +1,6 @@
 {
   "name": "admin-backend",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -14,15 +14,10 @@
   "homepage": "https://github.com/NiftyRoyale/admin-backend#readme",
   "description": "",
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js",
-    "dev:local": "NODE_ENV=development nodemon dev.js --exec babel-node",
-    "dev:sls": "sls offline",
-    "build": "babel src -d dist",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register --timeout 10000",
-    "deploy": "npm run build && serverless deploy --aws-profile kvnqng"
+    "build": "netlify-lambda build express",
+    "start": "nodemon server-local.js"
   },
   "dependencies": {
-    "aws-serverless-express": "^3.4.0",
     "body-parser": "^1.19.1",
     "config": "^3.3.6",
     "cors": "^2.8.5",
@@ -30,15 +25,11 @@
     "http": "^0.0.1-security",
     "http-errors": "^1.8.1",
     "mongoose": "^6.1.5",
-    "morgan": "^1.10.0",
+    "netlify-lambda": "^2.0.15",
     "serverless-http": "^2.7.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.15",
-    "serverless-offline": "^8.3.1"
+    "nodemon": "^2.0.15"
   }
 }

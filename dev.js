@@ -1,9 +1,5 @@
 "use strict";
 
-const app = require("./src/app");
-const port = process.env.PORT || 8000;
+const app = require("./src/api");
 
-// Listen to server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(8000, () => console.log('Local app listening on port 3000!'));
