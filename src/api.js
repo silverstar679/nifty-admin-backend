@@ -156,7 +156,7 @@ router.get("/opensea/orders/", async (req, res, next) => {
     const address = req.query.address;
     const tokenIds = req.query.tokenIds;
     const tokenIdsArr = tokenIds.split(",");
-    let url = `https://${network}api.opensea.io/wyvern/v1/orders?asset_contract_address=${address}&order_direction=desc&limit=30`;
+    let url = `https://${network}api.opensea.io/v2/orders/ethereum/seaport/listings?asset_contract_address=${address}&order_direction=desc&limit=30`;
     for (let i = 0; i < tokenIdsArr.length; i++) {
       url += `&token_ids=${tokenIdsArr[i]}`;
     }
