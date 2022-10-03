@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const serverless = require("serverless-http");
-const https = require("https")
+const https = require("https");
 // Import DB Connection
 require("./config/db");
 
@@ -169,38 +169,23 @@ router.get("/opensea/orders/", async (req, res, next) => {
           }
         : {};
 
-    let dataString = "";
-    const response = await new Promise((resolve, reject) => {
-      const req = https.get(url, options, function (res) {
-        res.on("data", (chunk) => {
-          dataString += chunk;
+    let data = "";
+    https
+      .get(url, options, function (resp) {
+        resp.on("data", (chunk) => {
+          data += chunk;
         });
 
-        res.on("end", () => {
-          resolve(JSON.parse(dataString));
+        resp.on("end", () => {
+          res.status(200).json(JSON.parse(data));
         });
-      });
-
-      req.on("error", (e) => {
+      })
+      .on("error", (e) => {
         reject({
           statusCode: 500,
           body: "Something went wrong!",
         });
       });
-    });
-    res.status(200).json(response);
-
-    // return new Promise((resolve, reject) => {
-    //   resolve({
-    //     statusCode: 200,
-    //     headers: {
-    //       "Access-Control-Allow-Headers": "Content-Type",
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Access-Control-Allow-Methods": "GET,OPTIONS",
-    //     },
-    //     body: JSON.stringify(response, null, 4),
-    //   });
-    // });
   } catch (errors) {
     return next(errors);
   }
