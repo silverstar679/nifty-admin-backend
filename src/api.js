@@ -107,7 +107,6 @@ router.delete("/collection/:id/", function (req, res) {
   });
 });
 
-
 router.get("/collectionBattles/", function (req, res) {
   const network = req.query.network;
   CollectionBattle.find({ network: network }, (err, battle) => {
@@ -149,6 +148,61 @@ router.delete("/collectionBattle/:id/", function (req, res) {
     }
     res.status(200).json({ message: "CollectionBattle successfully deleted" });
   });
+});
+
+router.get("/opensea/orders/", async (req, res, next) => {
+  try {
+    const network = req.query.network;
+    const address = req.query.address;
+    const tokenIds = req.query.tokenIds;
+    const tokenIdsArr = tokenIds.split(",");
+    let url = `https://${network}api.opensea.io/wyvern/v1/orders?asset_contract_address=${address}&order_direction=desc&limit=30`;
+    for (let i = 0; i < tokenIdsArr.length; i++) {
+      url += `&token_ids=${tokenIdsArr[i]}`;
+    }
+    const options =
+      network !== "testnets-"
+        ? {
+            headers: {
+              "X-API-KEY": "0e1bf05b31b84741beb801f347e6e30a",
+            },
+          }
+        : {};
+
+    let dataString = "";
+    const response = await new Promise((resolve, reject) => {
+      const req = https.get(url, options, function (res) {
+        res.on("data", (chunk) => {
+          dataString += chunk;
+        });
+
+        res.on("end", () => {
+          resolve(JSON.parse(dataString));
+        });
+      });
+
+      req.on("error", (e) => {
+        reject({
+          statusCode: 500,
+          body: "Something went wrong!",
+        });
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      resolve({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,OPTIONS",
+        },
+        body: JSON.stringify(response, null, 4),
+      });
+    });
+  } catch (errors) {
+    return next(errors);
+  }
 });
 
 app
