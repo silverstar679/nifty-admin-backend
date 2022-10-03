@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const serverless = require("serverless-http");
-
+const https = require("https")
 // Import DB Connection
 require("./config/db");
 
@@ -188,18 +188,19 @@ router.get("/opensea/orders/", async (req, res, next) => {
         });
       });
     });
+    res.status(200).json(response);
 
-    return new Promise((resolve, reject) => {
-      resolve({
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,OPTIONS",
-        },
-        body: JSON.stringify(response, null, 4),
-      });
-    });
+    // return new Promise((resolve, reject) => {
+    //   resolve({
+    //     statusCode: 200,
+    //     headers: {
+    //       "Access-Control-Allow-Headers": "Content-Type",
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Access-Control-Allow-Methods": "GET,OPTIONS",
+    //     },
+    //     body: JSON.stringify(response, null, 4),
+    //   });
+    // });
   } catch (errors) {
     return next(errors);
   }
